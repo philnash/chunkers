@@ -52,7 +52,10 @@ export default function Langchain({ text, setOutput }: Readonly<Props>) {
     }
   }
 
-  async function chunk() {
+  async function chunk(event?: React.FormEvent) {
+    if (event) {
+      event.preventDefault();
+    }
     const output = await chunkText(splitter, text, chunkSize, overlap);
     setOutput(output);
   }
@@ -68,67 +71,69 @@ export default function Langchain({ text, setOutput }: Readonly<Props>) {
           @langchain/textsplitters
         </a>
       </h2>
-      <div>
-        <label htmlFor="lc-splitter">Splitter: </label>
-        <select
-          name="lc-splitter"
-          id="lc-splitter"
-          value={splitter}
-          onChange={setSplitterFromSelect}
-        >
-          {SPLITTERS.map((splitter) => (
-            <option key={splitter} value={splitter}>
-              {splitter}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label htmlFor="lc-chunksize">Chunk Size:</label>
-        <input
-          type="number"
-          inputMode="numeric"
-          id="lc-chunksize"
-          name="lc-chunksize"
-          value={chunkSize}
-          onChange={(event) =>
-            setChunkSize(parseInt(event.currentTarget.value, 10))
-          }
-        ></input>
-      </div>
-      <div>
-        <label htmlFor="lc-overlap">Overlap Size:</label>
-        <input
-          type="number"
-          inputMode="numeric"
-          id="lc-overlap"
-          name="lc-overlap"
-          value={overlap}
-          onChange={(event) =>
-            setOverlap(parseInt(event.currentTarget.value, 10))
-          }
-        ></input>
-      </div>
-      {splitter === "RecursiveCharacterTextSplitter" && (
+      <form onSubmit={chunk}>
         <div>
-          <label htmlFor="lc-language">Language:</label>
+          <label htmlFor="lc-splitter">Splitter: </label>
           <select
-            name="lc-language"
-            id="lc-language"
-            value={language}
-            onChange={setLanguageFromSelect}
+            name="lc-splitter"
+            id="lc-splitter"
+            value={splitter}
+            onChange={setSplitterFromSelect}
           >
-            {" "}
-            <option key="none" value=""></option>
-            {SupportedTextSplitterLanguages.map((language) => (
-              <option key={language} value={language}>
-                {language}
+            {SPLITTERS.map((splitter) => (
+              <option key={splitter} value={splitter}>
+                {splitter}
               </option>
             ))}
           </select>
         </div>
-      )}
-      <ChunkButton chunkText={chunk} text={text} />
+        <div>
+          <label htmlFor="lc-chunksize">Chunk Size:</label>
+          <input
+            type="number"
+            inputMode="numeric"
+            id="lc-chunksize"
+            name="lc-chunksize"
+            value={chunkSize}
+            onChange={(event) =>
+              setChunkSize(parseInt(event.currentTarget.value, 10))
+            }
+          ></input>
+        </div>
+        <div>
+          <label htmlFor="lc-overlap">Overlap Size:</label>
+          <input
+            type="number"
+            inputMode="numeric"
+            id="lc-overlap"
+            name="lc-overlap"
+            value={overlap}
+            onChange={(event) =>
+              setOverlap(parseInt(event.currentTarget.value, 10))
+            }
+          ></input>
+        </div>
+        {splitter === "RecursiveCharacterTextSplitter" && (
+          <div>
+            <label htmlFor="lc-language">Language:</label>
+            <select
+              name="lc-language"
+              id="lc-language"
+              value={language}
+              onChange={setLanguageFromSelect}
+            >
+              {" "}
+              <option key="none" value=""></option>
+              {SupportedTextSplitterLanguages.map((language) => (
+                <option key={language} value={language}>
+                  {language}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+        <ChunkButton chunkText={chunk} text={text} />
+      </form>
     </>
   );
 }
