@@ -4,10 +4,12 @@ import {
   MarkdownTextSplitter,
 } from "@langchain/textsplitters";
 
-export type Chunks = Array<{
+export type Chunk = {
   chunk: string;
   id: string;
-}>;
+};
+
+export type Chunks = Array<Chunk>;
 
 export const LANGCHAIN_SPLITTER_MAP = {
   CharacterTextSplitter: CharacterTextSplitter,

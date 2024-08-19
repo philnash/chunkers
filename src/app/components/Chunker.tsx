@@ -10,6 +10,7 @@ import Input from "./Input";
 import Output from "./Output";
 import LLMChunk from "./LLMChunk";
 import Langchain from "./Langchain";
+import LlamaIndex from "./LlamaIndex";
 
 export default function Chunker() {
   const [text, setText] = useState("");
@@ -34,9 +35,9 @@ export default function Chunker() {
         <TabPanel>
           <Langchain text={text} setOutput={setOutput} />
         </TabPanel>
-        {/* <TabPanel>
-            <LlamaIndex text={text} setOutput={setOutput} />
-          </TabPanel> */}
+        <TabPanel>
+          <LlamaIndex text={text} setOutput={setOutput} />
+        </TabPanel>
       </Tabs>
 
       <section>

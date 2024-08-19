@@ -5,7 +5,7 @@ import {
   type LangchainSplitter,
   LANGCHAIN_SPLITTER_MAP,
 } from "../types";
-import { nanoid } from "nanoid";
+import { addIdsToChunks } from "./utils";
 
 export async function chunkText(
   splitter: LangchainSplitter,
@@ -16,5 +16,5 @@ export async function chunkText(
   const SplitterClass = LANGCHAIN_SPLITTER_MAP[splitter];
   const textSplitter = new SplitterClass({ chunkSize, chunkOverlap });
   const chunks = await textSplitter.splitText(text);
-  return chunks.map((chunk) => ({ chunk, id: nanoid() }));
+  return addIdsToChunks(chunks);
 }

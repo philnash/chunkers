@@ -2,7 +2,7 @@
 
 import { chunk } from "llm-chunk";
 import { type Chunks } from "../types";
-import { nanoid } from "nanoid";
+import { addIdsToChunks } from "./utils";
 
 type SplitOptions = {
   minLength?: number;
@@ -17,5 +17,5 @@ export async function chunkText(
   options: SplitOptions
 ): Promise<Chunks> {
   const chunks = chunk(text, options);
-  return chunks.map((chunk) => ({ chunk, id: nanoid() }));
+  return addIdsToChunks(chunks);
 }
