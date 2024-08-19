@@ -1,11 +1,11 @@
-.chunkers .react-tabs__tab:focus::after {
+.tab:focus::after {
   display: none;
 }
 
-.chunkers .react-tabs__tab:focus {
+.tab:focus {
   outline: 2px solid var(--accent-color);
 }
 
-.chunkers .react-tabs__tab-panel label {
+.tab-panel label {
   margin-right: 0.5ch;
 }

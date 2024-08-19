@@ -14,9 +14,11 @@
     "llm-chunk": "^0.0.1",
     "nanoid": "^5.0.7",
     "next": "14.2.5",
+    "onnxruntime-web": "^1.19.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-tabs": "^6.0.2"
+    "react-tabs": "^6.0.2",
+    "semantic-chunking": "^1.2.1"
   },
   "devDependencies": {
     "@types/node": "^20",

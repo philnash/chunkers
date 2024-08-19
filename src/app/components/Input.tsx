@@ -9,7 +9,12 @@ export default function Input({ text, handleUpdate }: Readonly<InputProps>) {
   return (
     <section className="input">
       <label htmlFor="input">Enter your text here:</label>
-      <textarea id="input" value={text} onChange={handleUpdate}></textarea>
+      <textarea
+        id="input"
+        value={text}
+        onChange={handleUpdate}
+        spellCheck={false}
+      ></textarea>
     </section>
   );
 }

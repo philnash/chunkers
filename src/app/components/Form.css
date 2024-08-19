@@ -1,0 +1,45 @@
+form {
+  margin-bottom: 2rem;
+}
+
+form div label {
+  margin-right: 0.5ch;
+  text-align: left;
+  grid-area: label;
+  align-self: end;
+}
+
+form div select,
+form div input {
+  font-size: inherit;
+  transition: border-color 0.25s;
+  border-radius: 6px;
+  border: 1px solid var(--background-darker);
+  padding: 0.25em 0.4em;
+  grid-area: input;
+  height: 2em;
+}
+
+form div select:focus-visible,
+form div select:focus,
+form div input:focus,
+form div input:focus-visible {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+form div p {
+  grid-area: info;
+  margin: 0.2em 0 0.5em 0;
+  font-size: 0.8em;
+}
+
+form div {
+  margin-bottom: 0.5rem;
+  display: grid;
+  grid-template-columns: 25% 75%;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "label input"
+    "info info";
+}
