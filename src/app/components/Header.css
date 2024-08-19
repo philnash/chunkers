@@ -1,0 +1,27 @@
+header {
+  padding-bottom: 20px;
+  margin-bottom: 40px;
+  box-shadow: inset color-mix(in srgb, var(--accent-color) 40%, transparent) 0px
+      5px,
+    inset color-mix(in srgb, var(--accent-color) 30%, transparent) 0px 10px,
+    inset color-mix(in srgb, var(--accent-color) 20%, transparent) 0px 15px,
+    inset color-mix(in srgb, var(--accent-color) 10%, transparent) 0px 20px,
+    inset color-mix(in srgb, var(--accent-color) 5%, transparent) 0px 25px;
+}
+
+header h1 {
+  font-family: Modak, "Comic Sans", cursive;
+  font-size: 4em;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0px var(--background-color),
+    4px 4px 0px var(--accent-color);
+  padding: 20px 20px 0 20px;
+}
+
+header h1,
+header p {
+  max-width: var(--site-width);
+  margin: 0 auto;
+
+  text-align: center;
+}

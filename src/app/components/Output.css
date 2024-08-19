@@ -1,0 +1,9 @@
+output div {
+  text-wrap: wrap;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background-color: var(--background-darker);
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
