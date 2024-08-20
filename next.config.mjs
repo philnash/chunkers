@@ -1,11 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverComponentsExternalPackages: [
-      "onnxruntime-node",
-      "tiktoken",
-      "@xenova/transformers",
-    ],
+    serverComponentsExternalPackages: ["onnxruntime-node", "tiktoken"],
     outputFileTracingIncludes: {
       "/api/**/*": ["./node_modules/**/*.wasm"],
     },
