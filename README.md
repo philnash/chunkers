@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Chunkers
+An exploration of JavaScript text splitters.
 
-## Getting Started
+## What is chunking?
 
-First, run the development server:
+When building a [Retrieval-Augmented Generation (RAG) based app](https://www.datastax.com/guides/what-is-retrieval-augmented-generation), one of the most important things you need to do is to get your data AI-ready. One of the steps in that process is known as "chunking" as it is used to break down large blocks of text or unstructured data into smaller chunks. Read more about [why chunking is important and what to consider here](https://www.datastax.com/blog/chunking-to-get-your-data-ai-ready).
 
-```bash
+In the JavaScript world, there are a few libraries that can help you with chunking your data. This project is an exploration of those tools.
+
+## The project
+
+This is a Next.js application that allows you to experiment with four JavaScript tools that provide different text chunking capabilities. The tools are:
+
+* [llm-chunk](https://github.com/golbin/llm-chunk)
+* [@langchain/textsplitters](https://js.langchain.com/v0.1/docs/modules/data_connection/document_transformers/)
+* [LlamaIndex NodeParser](https://ts.llamaindex.ai/modules/node_parser)
+* [semantic-chunking](https://github.com/jparkerweb/semantic-chunking)
+
+
+## Running the project
+
+First, clone this repo:
+
+```sh
+git clone https://github.com/philnash/chunkers.git
+cd chunkers
+```
+
+Install the dependencies:
+
+```sh
+npm install
+```
+
+Then, run the development server:
+
+```sh
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
