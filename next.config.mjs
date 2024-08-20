@@ -2,6 +2,9 @@
 const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ["onnxruntime-node"],
+    outputFileTracingIncludes: {
+      "/api/**/*": ["./node_modules/**/*.wasm"],
+    },
   },
 };
 
