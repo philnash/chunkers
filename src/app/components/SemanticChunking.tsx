@@ -8,21 +8,32 @@ import { Chunks } from "../types";
 type Props = {
   text: string;
   setOutput: React.Dispatch<React.SetStateAction<Chunks>>;
+  setResult: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
-export default function SemanticChunking({ text, setOutput }: Readonly<Props>) {
-  const [maxTokenSize, setMaxTokenSize] = useState(500);
+export default function SemanticChunking({
+  text,
+  setOutput,
+  setResult,
+}: Readonly<Props>) {
+  const [maxTokenSize, setMaxTokenSize] = useState(1024);
   const [similarityThreshold, setSimilarityThreshold] = useState(0.456);
+  const [isPending, setIsPending] = useState(false);
 
   async function chunk(event?: React.FormEvent) {
     if (event) {
       event.preventDefault();
     }
+    setIsPending(true);
     const output = await chunkText(text, {
       maxTokenSize,
       similarityThreshold,
     });
     setOutput(output);
+    setResult(
+      `Chunked using the semantic-chunking splitter with a maxTokenSize of ${maxTokenSize} and similarity threshold of ${similarityThreshold}.`
+    );
+    setIsPending(false);
   }
 
   return (
@@ -71,7 +82,7 @@ export default function SemanticChunking({ text, setOutput }: Readonly<Props>) {
             included in the same chunk.
           </p>
         </div>
-        <ChunkButton chunkText={chunk} text={text} />
+        <ChunkButton isPending={isPending} chunkText={chunk} text={text} />
       </form>
     </>
   );

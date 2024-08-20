@@ -20,13 +20,19 @@ type Language = (typeof SupportedTextSplitterLanguages)[number];
 type Props = {
   text: string;
   setOutput: React.Dispatch<React.SetStateAction<Chunks>>;
+  setResult: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
-export default function Langchain({ text, setOutput }: Readonly<Props>) {
+export default function Langchain({
+  text,
+  setOutput,
+  setResult,
+}: Readonly<Props>) {
   const [chunkSize, setChunkSize] = useState(1024);
-  const [overlap, setOverlap] = useState(200);
+  const [overlap, setOverlap] = useState(128);
   const [splitter, setSplitter] = useState<LangchainSplitter>(SPLITTERS[0]);
   const [language, setLanguage] = useState<Language | "">("");
+  const [isPending, setIsPending] = useState(false);
 
   function isSplitter(splitter: string): splitter is LangchainSplitter {
     return SPLITTERS.includes(splitter as LangchainSplitter);
@@ -49,6 +55,8 @@ export default function Langchain({ text, setOutput }: Readonly<Props>) {
     const selected = event.currentTarget.value;
     if (isLanguage(selected)) {
       setLanguage(selected);
+    } else {
+      setLanguage("");
     }
   }
 
@@ -56,8 +64,25 @@ export default function Langchain({ text, setOutput }: Readonly<Props>) {
     if (event) {
       event.preventDefault();
     }
-    const output = await chunkText(splitter, text, chunkSize, overlap);
+    setIsPending(true);
+    const output = await chunkText(
+      splitter,
+      text,
+      chunkSize,
+      overlap,
+      language ? language : undefined
+    );
     setOutput(output);
+    if (splitter === "RecursiveCharacterTextSplitter" && language) {
+      setResult(
+        `Chunked using the LangChain ${splitter} for ${language} with a chunkSize of ${chunkSize}, chunkOverlap of ${overlap}, and overlap of ${overlap}.`
+      );
+    } else {
+      setResult(
+        `Chunked using the LangChain ${splitter} with a chunkSize of ${chunkSize}, chunkOverlap of ${overlap}, and overlap of ${overlap}.`
+      );
+    }
+    setIsPending(false);
   }
 
   return (
@@ -132,7 +157,7 @@ export default function Langchain({ text, setOutput }: Readonly<Props>) {
             </select>
           </div>
         )}
-        <ChunkButton chunkText={chunk} text={text} />
+        <ChunkButton isPending={isPending} chunkText={chunk} text={text} />
       </form>
     </>
   );

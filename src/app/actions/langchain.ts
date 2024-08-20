@@ -1,6 +1,10 @@
 "use server";
 
 import {
+  RecursiveCharacterTextSplitter,
+  SupportedTextSplitterLanguage,
+} from "@langchain/textsplitters";
+import {
   type Chunks,
   type LangchainSplitter,
   LANGCHAIN_SPLITTER_MAP,
@@ -11,10 +15,20 @@ export async function chunkText(
   splitter: LangchainSplitter,
   text: string,
   chunkSize: number,
-  chunkOverlap: number
+  chunkOverlap: number,
+  language?: SupportedTextSplitterLanguage
 ): Promise<Chunks> {
   const SplitterClass = LANGCHAIN_SPLITTER_MAP[splitter];
-  const textSplitter = new SplitterClass({ chunkSize, chunkOverlap });
-  const chunks = await textSplitter.splitText(text);
-  return addIdsToChunks(chunks);
+  if (SplitterClass === RecursiveCharacterTextSplitter && language) {
+    const codeSplitter = SplitterClass.fromLanguage(language, {
+      chunkSize,
+      chunkOverlap,
+    });
+    const chunks = await codeSplitter.splitText(text);
+    return addIdsToChunks(chunks);
+  } else {
+    const textSplitter = new SplitterClass({ chunkSize, chunkOverlap });
+    const chunks = await textSplitter.splitText(text);
+    return addIdsToChunks(chunks);
+  }
 }

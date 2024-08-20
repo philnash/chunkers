@@ -16,6 +16,7 @@ import SemanticChunking from "./SemanticChunking";
 export default function Chunker() {
   const [text, setText] = useState("");
   const [output, setOutput] = useState<Chunks>([]);
+  const [result, setResult] = useState<null | string>(null);
 
   const handleUpdate = (event: React.FormEvent<HTMLTextAreaElement>) => {
     setText(event.currentTarget.value);
@@ -37,21 +38,34 @@ export default function Chunker() {
             </Tab>
           </TabList>
           <TabPanel>
-            <LLMChunk text={text} setOutput={setOutput} />
+            <LLMChunk text={text} setOutput={setOutput} setResult={setResult} />
           </TabPanel>
           <TabPanel>
-            <Langchain text={text} setOutput={setOutput} />
+            <Langchain
+              text={text}
+              setOutput={setOutput}
+              setResult={setResult}
+            />
           </TabPanel>
           <TabPanel>
-            <LlamaIndex text={text} setOutput={setOutput} />
+            <LlamaIndex
+              text={text}
+              setOutput={setOutput}
+              setResult={setResult}
+            />
           </TabPanel>
           <TabPanel>
-            <SemanticChunking text={text} setOutput={setOutput} />
+            <SemanticChunking
+              text={text}
+              setOutput={setOutput}
+              setResult={setResult}
+            />
           </TabPanel>
         </Tabs>
       </section>
 
       <section>
+        {result && <p>{result}</p>}
         <Output chunks={output} />
       </section>
     </>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useActionState } from "react";
 
 import { chunkText } from "../actions/llm-chunk";
 
@@ -8,15 +8,21 @@ import { Chunks } from "../types";
 type Props = {
   text: string;
   setOutput: React.Dispatch<React.SetStateAction<Chunks>>;
+  setResult: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 type Splitter = "paragraph" | "sentence";
 
-export default function LLMChunk({ text, setOutput }: Readonly<Props>) {
+export default function LLMChunk({
+  text,
+  setOutput,
+  setResult,
+}: Readonly<Props>) {
   const [maxLength, setMaxLength] = useState(1024);
   const [minLength, setMinLength] = useState(0);
-  const [overlap, setOverlap] = useState(200);
+  const [overlap, setOverlap] = useState(128);
   const [splitter, setSplitter] = useState<Splitter>("paragraph");
+  const [isPending, setIsPending] = useState(false);
 
   function isSplitter(splitter: string): splitter is Splitter {
     return ["paragraph", "sentence"].includes(splitter);
@@ -33,12 +39,18 @@ export default function LLMChunk({ text, setOutput }: Readonly<Props>) {
     if (event) {
       event.preventDefault();
     }
+    setIsPending(true);
     const output = await chunkText(text, {
       overlap,
       splitter,
-      maxLength: maxLength,
+      maxLength,
+      minLength,
     });
     setOutput(output);
+    setResult(
+      `Chunked using the llm-chunk ${splitter} splitter with a maxLength of ${maxLength}, minLength of ${minLength}, and overlap of ${overlap}.`
+    );
+    setIsPending(false);
   }
 
   return (
@@ -101,7 +113,7 @@ export default function LLMChunk({ text, setOutput }: Readonly<Props>) {
             <option value="sentence">Sentence</option>
           </select>
         </div>
-        <ChunkButton chunkText={chunk} text={text} />
+        <ChunkButton isPending={isPending} chunkText={chunk} text={text} />
       </form>
     </>
   );

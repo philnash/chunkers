@@ -16,36 +16,49 @@ const SPLITTERS = [
 type Props = {
   text: string;
   setOutput: React.Dispatch<React.SetStateAction<Chunks>>;
+  setResult: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
-export default function LlamaIndex({ text, setOutput }: Readonly<Props>) {
-  const [chunkSize, setChunkSize] = useState(1000);
-  const [overlap, setOverlap] = useState(200);
+export default function LlamaIndex({
+  text,
+  setOutput,
+  setResult,
+}: Readonly<Props>) {
+  const [chunkSize, setChunkSize] = useState(1024);
+  const [overlap, setOverlap] = useState(128);
   const [window, setWindow] = useState(3);
   const [splitter, setSplitter] = useState<LlamaindexSplitter>(SPLITTERS[0]);
+  const [isPending, setIsPending] = useState(false);
 
   async function chunk(event?: React.FormEvent) {
     if (event) {
       event.preventDefault();
     }
     let output: Chunks = [];
+    let resultText: string;
+    setIsPending(true);
     switch (splitter) {
       case "SentenceSplitter":
         output = await chunkWithSentenceSplitter(text, {
           chunkSize,
           chunkOverlap: overlap,
         });
+        resultText = `Chunked using LlamaIndex SentenceSplitter with a chunk size of ${chunkSize} and an overlap of ${overlap}.`;
         break;
       case "MarkdownNodeParser":
         output = await chunkWithMarkdownParser(text);
+        resultText = `Chunked using LlamaIndex MarkdownNodeParser.`;
         break;
       case "SentenceWindowNodeParser":
+        resultText = `Chunked using LlamaIndex SentenceWindowNodeParser with a window size of ${window}.`;
         output = await chunkWithSentenceWindowParser(text, {
           windowSize: window,
         });
         break;
     }
     setOutput(output);
+    setResult(resultText);
+    setIsPending(false);
   }
 
   function isSplitter(splitter: string): splitter is LlamaindexSplitter {
@@ -127,7 +140,7 @@ export default function LlamaIndex({ text, setOutput }: Readonly<Props>) {
             ></input>
           </div>
         )}
-        <ChunkButton chunkText={chunk} text={text} />
+        <ChunkButton isPending={isPending} chunkText={chunk} text={text} />
       </form>
     </>
   );
