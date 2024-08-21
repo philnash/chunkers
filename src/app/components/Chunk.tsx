@@ -4,6 +4,7 @@ type ChunkProps = {
   previousText?: string;
   text: string;
   nextText?: string;
+  chunkNumber: number;
 };
 
 function findOverlapAtEnd(a: string, b: string) {
@@ -32,23 +33,30 @@ function getEndOverlap(text: string, nextText?: string) {
   return "";
 }
 
-function overlapSpan(overlap: string) {
-  return overlap ? <span className={styles.overlap}>{overlap}</span> : "";
+function overlapSpan(overlap: string, className: string) {
+  return overlap ? <span className={className}>{overlap}</span> : "";
 }
 
 export default function Chunk({
   previousText,
   text,
   nextText,
+  chunkNumber,
 }: Readonly<ChunkProps>) {
   const startOverlap = getStartOverlap(text, previousText);
   const endOverlap = getEndOverlap(text, nextText);
   let middleText = text.replace(startOverlap, "").replace(endOverlap, "");
   return (
-    <div className="card">
-      {overlapSpan(startOverlap)}
-      {middleText}
-      {overlapSpan(endOverlap)}
-    </div>
+    <>
+      <p className={styles.stats}>
+        Chunk {chunkNumber} - {text.length} character
+        {text.length === 1 ? "" : "s"}
+      </p>
+      <div className="card">
+        {overlapSpan(startOverlap, styles["overlap-before"])}
+        {middleText}
+        {overlapSpan(endOverlap, styles["overlap-after"])}
+      </div>
+    </>
   );
 }

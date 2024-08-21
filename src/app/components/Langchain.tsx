@@ -144,7 +144,7 @@ export default function Langchain({ text, selected }: Readonly<SplitterProps>) {
         )}
       </section>
       <section>
-        <Output chunks={output} />
+        <Output chunks={output} text={text} />
       </section>
     </>
   );

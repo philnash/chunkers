@@ -106,7 +106,7 @@ export default function LLMChunk({ text, selected }: Readonly<SplitterProps>) {
         </div>
       </section>
       <section>
-        <Output chunks={output} />
+        <Output chunks={output} text={text} />
       </section>
     </>
   );

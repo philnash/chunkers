@@ -79,7 +79,7 @@ export default function SemanticChunking({
         </div>
       </section>
       <section>
-        <Output chunks={output} />
+        <Output chunks={output} text={text} />
       </section>
     </>
   );

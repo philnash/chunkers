@@ -23,7 +23,8 @@
   --background-darker: #171717;
   --text-color: rgba(255, 255, 255, 0.87);
   --accent-color: #646cff;
-  --accent-lighter: #535bf2;
+  --accent-darker: #535bf2;
+  --accent-secondary: #732d80;
   --button-background: #1a1a1a;
   --border-color: #171717;
 
@@ -51,7 +52,7 @@ a {
   text-decoration: inherit;
 }
 a:hover {
-  color: var(--accent-lighter);
+  color: var(--accent-darker);
 }
 
 button {
@@ -79,7 +80,7 @@ button:focus-visible {
     --background-darker: #dfdfdf;
     --text-color: #213547;
     --accent-color: #646cff;
-    --accent-lighter: #747bff;
+    --accent-darker: #747bff;
     --button-background: #f9f9f9;
     --border-color: #171717;
   }

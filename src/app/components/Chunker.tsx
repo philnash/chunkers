@@ -75,10 +75,6 @@ export default function Chunker() {
           </TabPanel>
         </Tabs>
       </section>
-
-      <section>
-        <Output chunks={output} />
-      </section>
     </>
   );
 }

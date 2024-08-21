@@ -1,3 +1,14 @@
-.overlap {
+.overlap-before {
+  background-color: var(--accent-secondary);
+  color: #fff;
+}
+.overlap-after {
   background-color: var(--accent-color);
+  color: #fff;
+}
+
+.stats {
+  font-size: 0.8em;
+  margin: 0 0 0.25em 0;
+  padding: 0 10px;
 }

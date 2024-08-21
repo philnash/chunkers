@@ -135,7 +135,7 @@ export default function LlamaIndex({
         )}
       </section>
       <section>
-        <Output chunks={output} />
+        <Output chunks={output} text={text} />
       </section>
     </>
   );

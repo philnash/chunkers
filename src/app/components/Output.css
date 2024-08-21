@@ -1,4 +1,4 @@
-output div.card {
+div.card {
   text-wrap: wrap;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -7,4 +7,11 @@ output div.card {
   border-radius: 6px;
   margin-bottom: 2em;
   border-bottom: 1px solid var(--text-color);
+}
+
+div.card p:first-child {
+  margin-top: 0;
+}
+div.card p:last-child {
+  margin-bottom: 0;
 }
