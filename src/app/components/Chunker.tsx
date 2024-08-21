@@ -26,14 +26,30 @@ export default function Chunker() {
       <Input text={text} handleUpdate={handleUpdate} />
 
       <section>
-        <Tabs className={styles.chunkers}>
+        <Tabs className={styles.tabs}>
           <TabList>
-            <Tab className={`react-tabs__tab ${styles.tab}`}>llm-chunk</Tab>
-            <Tab className={`react-tabs__tab ${styles.tab}`}>
+            <Tab
+              className={`react-tabs__tab ${styles.tab}`}
+              selectedClassName={`react-tabs__tab--selected ${styles.selected}`}
+            >
+              llm-chunk
+            </Tab>
+            <Tab
+              className={`react-tabs__tab ${styles.tab}`}
+              selectedClassName={`react-tabs__tab--selected ${styles.selected}`}
+            >
               @langchain/textsplitters
             </Tab>
-            <Tab className={`react-tabs__tab ${styles.tab}`}>llamaindex</Tab>
-            <Tab className={`react-tabs__tab ${styles.tab}`}>
+            <Tab
+              className={`react-tabs__tab ${styles.tab}`}
+              selectedClassName={`react-tabs__tab--selected ${styles.selected}`}
+            >
+              llamaindex
+            </Tab>
+            <Tab
+              className={`react-tabs__tab ${styles.tab}`}
+              selectedClassName={`react-tabs__tab--selected ${styles.selected}`}
+            >
               semantic-chunking
             </Tab>
           </TabList>

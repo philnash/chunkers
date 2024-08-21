@@ -1,3 +1,4 @@
+import "@fontsource/modak";
 import Header from "./components/Header";
 import Chunker from "./components/Chunker";
 import Footer from "./components/Footer";

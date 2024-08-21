@@ -10,7 +10,7 @@
   padding: 0.25em 0.4em;
   font-family: var(--font-stack);
   border-radius: 6px;
-  border: 1px solid var(--button-background);
+  border: 1px solid var(--border-color);
   transition: border-color 0.25s;
 }
 

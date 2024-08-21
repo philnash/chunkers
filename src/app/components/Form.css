@@ -14,7 +14,7 @@ form div input {
   font-size: inherit;
   transition: border-color 0.25s;
   border-radius: 6px;
-  border: 1px solid var(--background-darker);
+  border: 1px solid var(--border-color);
   padding: 0.25em 0.4em;
   grid-area: input;
   height: 2em;
@@ -37,7 +37,8 @@ form div p {
 form div {
   margin-bottom: 0.5rem;
   display: grid;
-  grid-template-columns: 25% 75%;
+  gap: 2%;
+  grid-template-columns: 29% 69%;
   grid-template-rows: auto;
   grid-template-areas:
     "label input"

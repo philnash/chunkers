@@ -9,3 +9,24 @@
 .tab-panel label {
   margin-right: 0.5ch;
 }
+
+.selected {
+  background-color: var(--background-darker);
+  color: var(--text-color);
+  border-bottom: 1px solid #aaa;
+}
+
+@media screen and (max-width: 770px) {
+  .tabs ul {
+    border-bottom: none;
+  }
+  .tab {
+    display: block;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 4px;
+  }
+  .selected {
+    outline: 2px solid var(--accent-color);
+  }
+}

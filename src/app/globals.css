@@ -25,6 +25,7 @@
   --accent-color: #646cff;
   --accent-lighter: #535bf2;
   --button-background: #1a1a1a;
+  --border-color: #171717;
 
   --site-width: 800px;
 }
@@ -80,5 +81,6 @@ button:focus-visible {
     --accent-color: #646cff;
     --accent-lighter: #747bff;
     --button-background: #f9f9f9;
+    --border-color: #171717;
   }
 }
