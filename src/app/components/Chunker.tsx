@@ -16,17 +16,25 @@ import SemanticChunking from "./SemanticChunking";
 export default function Chunker() {
   const [text, setText] = useState("");
   const [output, setOutput] = useState<Chunks>([]);
-  const [result, setResult] = useState<null | string>(null);
+  const [currentTab, setCurrentTab] = useState(0);
 
   const handleUpdate = (event: React.FormEvent<HTMLTextAreaElement>) => {
     setText(event.currentTarget.value);
+  };
+
+  const handleTabChanged = (index: number) => {
+    setCurrentTab(index);
   };
   return (
     <>
       <Input text={text} handleUpdate={handleUpdate} />
 
       <section>
-        <Tabs className={styles.tabs}>
+        <Tabs
+          className={styles.tabs}
+          forceRenderTabPanel={true}
+          onSelect={handleTabChanged}
+        >
           <TabList>
             <Tab
               className={`react-tabs__tab ${styles.tab}`}
@@ -54,34 +62,21 @@ export default function Chunker() {
             </Tab>
           </TabList>
           <TabPanel>
-            <LLMChunk text={text} setOutput={setOutput} setResult={setResult} />
+            <LLMChunk text={text} selected={currentTab === 0} />
           </TabPanel>
           <TabPanel>
-            <Langchain
-              text={text}
-              setOutput={setOutput}
-              setResult={setResult}
-            />
+            <Langchain text={text} selected={currentTab === 1} />
           </TabPanel>
           <TabPanel>
-            <LlamaIndex
-              text={text}
-              setOutput={setOutput}
-              setResult={setResult}
-            />
+            <LlamaIndex text={text} selected={currentTab === 2} />
           </TabPanel>
           <TabPanel>
-            <SemanticChunking
-              text={text}
-              setOutput={setOutput}
-              setResult={setResult}
-            />
+            <SemanticChunking text={text} selected={currentTab === 3} />
           </TabPanel>
         </Tabs>
       </section>
 
       <section>
-        {result && <p>{result}</p>}
         <Output chunks={output} />
       </section>
     </>

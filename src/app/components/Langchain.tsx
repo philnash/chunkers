@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   SupportedTextSplitterLanguage,
   SupportedTextSplitterLanguages,
 } from "@langchain/textsplitters";
 
-import ChunkButton from "./ChunkButton";
-
+import { useDebounce } from "../hooks/useDebounce";
 import { chunkText } from "../actions/langchain";
-import { Chunks, LangchainSplitter } from "../types";
+import Output from "./Output";
+import { Chunks, LangchainSplitter, SplitterProps } from "../types";
 
 const SPLITTERS = [
   "CharacterTextSplitter",
@@ -17,22 +17,12 @@ const SPLITTERS = [
 
 type Language = (typeof SupportedTextSplitterLanguages)[number];
 
-type Props = {
-  text: string;
-  setOutput: React.Dispatch<React.SetStateAction<Chunks>>;
-  setResult: React.Dispatch<React.SetStateAction<string | null>>;
-};
-
-export default function Langchain({
-  text,
-  setOutput,
-  setResult,
-}: Readonly<Props>) {
+export default function Langchain({ text, selected }: Readonly<SplitterProps>) {
+  const [output, setOutput] = useState<Chunks>([]);
   const [chunkSize, setChunkSize] = useState(1024);
   const [overlap, setOverlap] = useState(128);
   const [splitter, setSplitter] = useState<LangchainSplitter>(SPLITTERS[0]);
   const [language, setLanguage] = useState<Language | "">("");
-  const [isPending, setIsPending] = useState(false);
 
   function isSplitter(splitter: string): splitter is LangchainSplitter {
     return SPLITTERS.includes(splitter as LangchainSplitter);
@@ -60,11 +50,10 @@ export default function Langchain({
     }
   }
 
-  async function chunk(event?: React.FormEvent) {
-    if (event) {
-      event.preventDefault();
-    }
-    setIsPending(true);
+  async function chunk() {
+    if (text.trim() === "") return;
+    if (!selected) return;
+    if (isNaN(chunkSize) || isNaN(overlap)) return;
     const output = await chunkText(
       splitter,
       text,
@@ -73,17 +62,13 @@ export default function Langchain({
       language ? language : undefined
     );
     setOutput(output);
-    if (splitter === "RecursiveCharacterTextSplitter" && language) {
-      setResult(
-        `Chunked using the LangChain ${splitter} for ${language} with a chunkSize of ${chunkSize}, chunkOverlap of ${overlap}, and overlap of ${overlap}.`
-      );
-    } else {
-      setResult(
-        `Chunked using the LangChain ${splitter} with a chunkSize of ${chunkSize}, chunkOverlap of ${overlap}, and overlap of ${overlap}.`
-      );
-    }
-    setIsPending(false);
   }
+
+  const debouncedChunk = useDebounce(chunk);
+
+  useEffect(() => {
+    debouncedChunk();
+  }, [text, chunkSize, overlap, splitter, language, selected]);
 
   return (
     <>
@@ -96,7 +81,7 @@ export default function Langchain({
           @langchain/textsplitters
         </a>
       </h2>
-      <form onSubmit={chunk}>
+      <section className="options">
         <div>
           <label htmlFor="lc-splitter">Splitter: </label>
           <select
@@ -157,8 +142,10 @@ export default function Langchain({
             </select>
           </div>
         )}
-        <ChunkButton isPending={isPending} chunkText={chunk} text={text} />
-      </form>
+      </section>
+      <section>
+        <Output chunks={output} />
+      </section>
     </>
   );
 }

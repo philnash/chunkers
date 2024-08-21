@@ -1,40 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDebounce } from "../hooks/useDebounce";
 
 import { chunkText } from "../actions/semantic-chunking";
 
-import ChunkButton from "./ChunkButton";
-import { Chunks } from "../types";
-
-type Props = {
-  text: string;
-  setOutput: React.Dispatch<React.SetStateAction<Chunks>>;
-  setResult: React.Dispatch<React.SetStateAction<string | null>>;
-};
+import Output from "./Output";
+import { Chunks, SplitterProps } from "../types";
 
 export default function SemanticChunking({
   text,
-  setOutput,
-  setResult,
-}: Readonly<Props>) {
+  selected,
+}: Readonly<SplitterProps>) {
+  const [output, setOutput] = useState<Chunks>([]);
   const [maxTokenSize, setMaxTokenSize] = useState(1024);
   const [similarityThreshold, setSimilarityThreshold] = useState(0.456);
-  const [isPending, setIsPending] = useState(false);
 
   async function chunk(event?: React.FormEvent) {
-    if (event) {
-      event.preventDefault();
-    }
-    setIsPending(true);
+    if (text.trim() === "") return;
+    if (!selected) return;
+    if (isNaN(maxTokenSize) || isNaN(similarityThreshold)) return;
     const output = await chunkText(text, {
       maxTokenSize,
       similarityThreshold,
     });
     setOutput(output);
-    setResult(
-      `Chunked using the semantic-chunking splitter with a maxTokenSize of ${maxTokenSize} and similarity threshold of ${similarityThreshold}.`
-    );
-    setIsPending(false);
   }
+
+  const debouncedChunk = useDebounce(chunk);
+
+  useEffect(() => {
+    debouncedChunk();
+  }, [text, maxTokenSize, similarityThreshold, selected]);
 
   return (
     <>
@@ -47,7 +42,7 @@ export default function SemanticChunking({
           semantic-chunking
         </a>
       </h2>
-      <form onSubmit={chunk}>
+      <section className="options">
         <div>
           <label htmlFor="semchunk-max-token-size">Max length:</label>
           <input
@@ -82,8 +77,10 @@ export default function SemanticChunking({
             included in the same chunk.
           </p>
         </div>
-        <ChunkButton isPending={isPending} chunkText={chunk} text={text} />
-      </form>
+      </section>
+      <section>
+        <Output chunks={output} />
+      </section>
     </>
   );
 }

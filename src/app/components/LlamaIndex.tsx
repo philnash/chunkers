@@ -1,11 +1,12 @@
-import { useState } from "react";
-import ChunkButton from "./ChunkButton";
+import { useState, useEffect } from "react";
+import { useDebounce } from "../hooks/useDebounce";
+import Output from "./Output";
 import {
   chunkWithMarkdownParser,
   chunkWithSentenceSplitter,
   chunkWithSentenceWindowParser,
 } from "../actions/llamaindex";
-import { Chunks, LlamaindexSplitter } from "../types";
+import { Chunks, LlamaindexSplitter, SplitterProps } from "../types";
 
 const SPLITTERS = [
   "SentenceSplitter",
@@ -13,53 +14,45 @@ const SPLITTERS = [
   "SentenceWindowNodeParser",
 ] as const;
 
-type Props = {
-  text: string;
-  setOutput: React.Dispatch<React.SetStateAction<Chunks>>;
-  setResult: React.Dispatch<React.SetStateAction<string | null>>;
-};
-
 export default function LlamaIndex({
   text,
-  setOutput,
-  setResult,
-}: Readonly<Props>) {
+  selected,
+}: Readonly<SplitterProps>) {
+  const [output, setOutput] = useState<Chunks>([]);
   const [chunkSize, setChunkSize] = useState(1024);
   const [overlap, setOverlap] = useState(128);
   const [window, setWindow] = useState(3);
   const [splitter, setSplitter] = useState<LlamaindexSplitter>(SPLITTERS[0]);
-  const [isPending, setIsPending] = useState(false);
 
-  async function chunk(event?: React.FormEvent) {
-    if (event) {
-      event.preventDefault();
-    }
+  async function chunk() {
+    if (text.trim() === "") return;
+    if (!selected) return;
+    if (isNaN(chunkSize) || isNaN(window) || isNaN(overlap)) return;
     let output: Chunks = [];
-    let resultText: string;
-    setIsPending(true);
     switch (splitter) {
       case "SentenceSplitter":
         output = await chunkWithSentenceSplitter(text, {
           chunkSize,
           chunkOverlap: overlap,
         });
-        resultText = `Chunked using LlamaIndex SentenceSplitter with a chunk size of ${chunkSize} and an overlap of ${overlap}.`;
         break;
       case "MarkdownNodeParser":
         output = await chunkWithMarkdownParser(text);
-        resultText = `Chunked using LlamaIndex MarkdownNodeParser.`;
         break;
       case "SentenceWindowNodeParser":
-        resultText = `Chunked using LlamaIndex SentenceWindowNodeParser with a window size of ${window}.`;
         output = await chunkWithSentenceWindowParser(text, {
           windowSize: window,
         });
         break;
     }
     setOutput(output);
-    setResult(resultText);
-    setIsPending(false);
   }
+
+  const debouncedChunk = useDebounce(chunk);
+
+  useEffect(() => {
+    debouncedChunk();
+  }, [text, chunkSize, overlap, splitter, window, selected]);
 
   function isSplitter(splitter: string): splitter is LlamaindexSplitter {
     return SPLITTERS.includes(splitter as LlamaindexSplitter);
@@ -79,7 +72,7 @@ export default function LlamaIndex({
           LlamaIndex
         </a>
       </h2>
-      <form onSubmit={chunk}>
+      <section className="options">
         <div>
           <label htmlFor="llamaindex-splitter">Splitter: </label>
           <select
@@ -140,8 +133,10 @@ export default function LlamaIndex({
             ></input>
           </div>
         )}
-        <ChunkButton isPending={isPending} chunkText={chunk} text={text} />
-      </form>
+      </section>
+      <section>
+        <Output chunks={output} />
+      </section>
     </>
   );
 }

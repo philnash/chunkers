@@ -16,6 +16,10 @@ export type Chunk = {
 };
 
 export type Chunks = Array<Chunk>;
+export type SplitterProps = {
+  text: string;
+  selected: boolean;
+};
 
 export const LANGCHAIN_SPLITTER_MAP = {
   CharacterTextSplitter: CharacterTextSplitter,

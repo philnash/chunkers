@@ -28,5 +28,3 @@ export default function Output({ chunks }: Readonly<OutputProps>) {
     </output>
   );
 }
-
-// A function to find the overlap between two strings

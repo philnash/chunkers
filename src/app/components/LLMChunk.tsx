@@ -1,28 +1,18 @@
-import { useState, useActionState } from "react";
-
+import { useState, useEffect } from "react";
 import { chunkText } from "../actions/llm-chunk";
 
-import ChunkButton from "./ChunkButton";
-import { Chunks } from "../types";
-
-type Props = {
-  text: string;
-  setOutput: React.Dispatch<React.SetStateAction<Chunks>>;
-  setResult: React.Dispatch<React.SetStateAction<string | null>>;
-};
+import Output from "./Output";
+import { useDebounce } from "../hooks/useDebounce";
+import { Chunks, SplitterProps } from "../types";
 
 type Splitter = "paragraph" | "sentence";
 
-export default function LLMChunk({
-  text,
-  setOutput,
-  setResult,
-}: Readonly<Props>) {
+export default function LLMChunk({ text, selected }: Readonly<SplitterProps>) {
+  const [output, setOutput] = useState<Chunks>([]);
   const [maxLength, setMaxLength] = useState(1024);
   const [minLength, setMinLength] = useState(0);
   const [overlap, setOverlap] = useState(128);
   const [splitter, setSplitter] = useState<Splitter>("paragraph");
-  const [isPending, setIsPending] = useState(false);
 
   function isSplitter(splitter: string): splitter is Splitter {
     return ["paragraph", "sentence"].includes(splitter);
@@ -35,11 +25,10 @@ export default function LLMChunk({
     }
   }
 
-  async function chunk(event?: React.FormEvent) {
-    if (event) {
-      event.preventDefault();
-    }
-    setIsPending(true);
+  async function chunk() {
+    if (text.trim() === "") return;
+    if (!selected) return;
+    if (isNaN(maxLength) || isNaN(minLength) || isNaN(overlap)) return;
     const output = await chunkText(text, {
       overlap,
       splitter,
@@ -47,11 +36,13 @@ export default function LLMChunk({
       minLength,
     });
     setOutput(output);
-    setResult(
-      `Chunked using the llm-chunk ${splitter} splitter with a maxLength of ${maxLength}, minLength of ${minLength}, and overlap of ${overlap}.`
-    );
-    setIsPending(false);
   }
+
+  const debouncedChunk = useDebounce(chunk);
+
+  useEffect(() => {
+    debouncedChunk();
+  }, [text, maxLength, minLength, overlap, splitter, selected]);
 
   return (
     <>
@@ -61,7 +52,7 @@ export default function LLMChunk({
           llm-chunk
         </a>
       </h2>
-      <form onSubmit={chunk}>
+      <section className="options">
         <div>
           <label htmlFor="llmchunk-max-length">Max length:</label>
           <input
@@ -113,8 +104,10 @@ export default function LLMChunk({
             <option value="sentence">Sentence</option>
           </select>
         </div>
-        <ChunkButton isPending={isPending} chunkText={chunk} text={text} />
-      </form>
+      </section>
+      <section>
+        <Output chunks={output} />
+      </section>
     </>
   );
 }
