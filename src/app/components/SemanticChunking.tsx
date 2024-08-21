@@ -29,7 +29,7 @@ export default function SemanticChunking({
 
   useEffect(() => {
     debouncedChunk();
-  }, [text, maxTokenSize, similarityThreshold, selected]);
+  }, [text, maxTokenSize, similarityThreshold, selected, debouncedChunk]);
 
   return (
     <>

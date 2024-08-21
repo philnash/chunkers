@@ -42,7 +42,7 @@ export default function LLMChunk({ text, selected }: Readonly<SplitterProps>) {
 
   useEffect(() => {
     debouncedChunk();
-  }, [text, maxLength, minLength, overlap, splitter, selected]);
+  }, [text, maxLength, minLength, overlap, splitter, selected, debouncedChunk]);
 
   return (
     <>
@@ -65,6 +65,7 @@ export default function LLMChunk({ text, selected }: Readonly<SplitterProps>) {
               setMaxLength(parseInt(event.currentTarget.value, 10))
             }
           ></input>
+          <p>The maximum number of characters in a chunk</p>
         </div>
         <div>
           <label htmlFor="llmchunk-min-length">Min length:</label>
@@ -78,6 +79,7 @@ export default function LLMChunk({ text, selected }: Readonly<SplitterProps>) {
               setMinLength(parseInt(event.currentTarget.value, 10))
             }
           ></input>
+          <p>The minimum number of characters in a chunk</p>
         </div>
         <div>
           <label htmlFor="llmchunk-overlap">Overlap Size:</label>
@@ -91,6 +93,7 @@ export default function LLMChunk({ text, selected }: Readonly<SplitterProps>) {
               setOverlap(parseInt(event.currentTarget.value, 10))
             }
           ></input>
+          <p>The number of overlap characters</p>
         </div>
         <div>
           <label htmlFor="llmchunk-splitter">Splitter:</label>
@@ -103,6 +106,7 @@ export default function LLMChunk({ text, selected }: Readonly<SplitterProps>) {
             <option value="paragraph">Paragraph</option>
             <option value="sentence">Sentence</option>
           </select>
+          <p>Split the text by paragraphs or sentences</p>
         </div>
       </section>
       <section>

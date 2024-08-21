@@ -68,7 +68,7 @@ export default function Langchain({ text, selected }: Readonly<SplitterProps>) {
 
   useEffect(() => {
     debouncedChunk();
-  }, [text, chunkSize, overlap, splitter, language, selected]);
+  }, [text, chunkSize, overlap, splitter, language, selected, debouncedChunk]);
 
   return (
     <>
@@ -96,6 +96,7 @@ export default function Langchain({ text, selected }: Readonly<SplitterProps>) {
               </option>
             ))}
           </select>
+          <p>The LangChain text splitter to use</p>
         </div>
         <div>
           <label htmlFor="lc-chunksize">Chunk Size:</label>
@@ -109,6 +110,7 @@ export default function Langchain({ text, selected }: Readonly<SplitterProps>) {
               setChunkSize(parseInt(event.currentTarget.value, 10))
             }
           ></input>
+          <p>The number of characters per chunk</p>
         </div>
         <div>
           <label htmlFor="lc-overlap">Overlap Size:</label>
@@ -122,6 +124,7 @@ export default function Langchain({ text, selected }: Readonly<SplitterProps>) {
               setOverlap(parseInt(event.currentTarget.value, 10))
             }
           ></input>
+          <p>The number of characters in the overlap between chunks</p>
         </div>
         {splitter === "RecursiveCharacterTextSplitter" && (
           <div>
@@ -140,6 +143,10 @@ export default function Langchain({ text, selected }: Readonly<SplitterProps>) {
                 </option>
               ))}
             </select>
+            <p>
+              The RecursiveCharacterTextSplitter can intelligently split code as
+              well as just text. Pick the language you are trying to split
+            </p>
           </div>
         )}
       </section>

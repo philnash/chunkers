@@ -52,7 +52,7 @@ export default function LlamaIndex({
 
   useEffect(() => {
     debouncedChunk();
-  }, [text, chunkSize, overlap, splitter, window, selected]);
+  }, [text, chunkSize, overlap, splitter, window, selected, debouncedChunk]);
 
   function isSplitter(splitter: string): splitter is LlamaindexSplitter {
     return SPLITTERS.includes(splitter as LlamaindexSplitter);
@@ -87,6 +87,7 @@ export default function LlamaIndex({
               </option>
             ))}
           </select>
+          <p>Choose the LlamaIndex splitter you want to use</p>
         </div>
         {splitter === "SentenceSplitter" && (
           <div>
@@ -101,6 +102,7 @@ export default function LlamaIndex({
                 setChunkSize(parseInt(event.currentTarget.value, 10))
               }
             ></input>
+            <p>The number of characters per chunk</p>
           </div>
         )}
         {splitter === "SentenceSplitter" && (
@@ -116,6 +118,7 @@ export default function LlamaIndex({
                 setOverlap(parseInt(event.currentTarget.value, 10))
               }
             ></input>
+            <p>The number of characters in the overlap between chunks</p>
           </div>
         )}
         {splitter === "SentenceWindowNodeParser" && (
@@ -131,6 +134,10 @@ export default function LlamaIndex({
                 setWindow(parseInt(event.currentTarget.value, 10))
               }
             ></input>
+            <p>
+              The number of sentences to overlap at the start and end of each
+              chunk
+            </p>
           </div>
         )}
       </section>
