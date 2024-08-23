@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useDebounce } from "../hooks/useDebounce";
+import { useDebouncedCallback } from "use-debounce";
 import Output from "./Output";
 import {
   chunkWithMarkdownParser,
@@ -48,7 +48,7 @@ export default function LlamaIndex({
     setOutput(output);
   }
 
-  const debouncedChunk = useDebounce(chunk);
+  const debouncedChunk = useDebouncedCallback(chunk, 500);
 
   useEffect(() => {
     debouncedChunk();

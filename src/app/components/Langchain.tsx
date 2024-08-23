@@ -4,7 +4,7 @@ import {
   SupportedTextSplitterLanguages,
 } from "@langchain/textsplitters";
 
-import { useDebounce } from "../hooks/useDebounce";
+import { useDebouncedCallback } from "use-debounce";
 import { chunkText } from "../actions/langchain";
 import Output from "./Output";
 import { Chunks, LangchainSplitter, SplitterProps } from "../types";
@@ -22,7 +22,7 @@ export default function Langchain({ text, selected }: Readonly<SplitterProps>) {
   const [chunkSize, setChunkSize] = useState(1024);
   const [overlap, setOverlap] = useState(128);
   const [splitter, setSplitter] = useState<LangchainSplitter>(SPLITTERS[0]);
-  const [language, setLanguage] = useState<Language | "">("");
+  const [language, setLanguage] = useState<Language | undefined>(undefined);
 
   function isSplitter(splitter: string): splitter is LangchainSplitter {
     return SPLITTERS.includes(splitter as LangchainSplitter);
@@ -46,7 +46,7 @@ export default function Langchain({ text, selected }: Readonly<SplitterProps>) {
     if (isLanguage(selected)) {
       setLanguage(selected);
     } else {
-      setLanguage("");
+      setLanguage(undefined);
     }
   }
 
@@ -59,12 +59,12 @@ export default function Langchain({ text, selected }: Readonly<SplitterProps>) {
       text,
       chunkSize,
       overlap,
-      language ? language : undefined
+      language
     );
     setOutput(output);
   }
 
-  const debouncedChunk = useDebounce(chunk);
+  const debouncedChunk = useDebouncedCallback(chunk, 500);
 
   useEffect(() => {
     debouncedChunk();

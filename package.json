@@ -19,7 +19,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-tabs": "^6.0.2",
-    "semantic-chunking": "^1.2.1"
+    "semantic-chunking": "^1.2.1",
+    "use-debounce": "^10.0.3"
   },
   "devDependencies": {
     "@types/node": "^20",

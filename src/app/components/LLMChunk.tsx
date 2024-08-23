@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { chunkText } from "../actions/llm-chunk";
 
 import Output from "./Output";
-import { useDebounce } from "../hooks/useDebounce";
+import { useDebouncedCallback } from "use-debounce";
 import { Chunks, SplitterProps } from "../types";
 
 type Splitter = "paragraph" | "sentence";
@@ -38,7 +38,7 @@ export default function LLMChunk({ text, selected }: Readonly<SplitterProps>) {
     setOutput(output);
   }
 
-  const debouncedChunk = useDebounce(chunk);
+  const debouncedChunk = useDebouncedCallback(chunk, 500);
 
   useEffect(() => {
     debouncedChunk();

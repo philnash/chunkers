@@ -2,11 +2,6 @@
 
 import z from "zod";
 import {
-  type Chunks,
-  type LlamaindexSplitter,
-  LLAMAINDEX_SPLITTER_MAP,
-} from "../types";
-import {
   sentenceSplitterSchema,
   sentenceWindowNodeParserSchema,
   Document,

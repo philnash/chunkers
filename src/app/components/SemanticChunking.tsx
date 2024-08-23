@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useDebounce } from "../hooks/useDebounce";
+import { useDebouncedCallback } from "use-debounce";
 
 import { chunkText } from "../actions/semantic-chunking";
 
@@ -25,7 +25,7 @@ export default function SemanticChunking({
     setOutput(output);
   }
 
-  const debouncedChunk = useDebounce(chunk);
+  const debouncedChunk = useDebouncedCallback(chunk, 500);
 
   useEffect(() => {
     debouncedChunk();
