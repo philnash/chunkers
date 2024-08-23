@@ -11,7 +11,7 @@ export default function SemanticChunking({
   selected,
 }: Readonly<SplitterProps>) {
   const [output, setOutput] = useState<Chunks>([]);
-  const [maxTokenSize, setMaxTokenSize] = useState(1024);
+  const [maxTokenSize, setMaxTokenSize] = useState(256);
   const [similarityThreshold, setSimilarityThreshold] = useState(0.456);
 
   async function chunk(event?: React.FormEvent) {

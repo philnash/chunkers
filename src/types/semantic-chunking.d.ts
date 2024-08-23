@@ -6,5 +6,5 @@ declare module "semantic-chunking" {
   export async function chunkit(
     text: string,
     chunkitOptions: ChunkitOptions
-  ): string[];
+  ): Promise<string[]>;
 }
