@@ -19,8 +19,8 @@ export default function LlamaIndex({
   selected,
 }: Readonly<SplitterProps>) {
   const [output, setOutput] = useState<Chunks>([]);
-  const [chunkSize, setChunkSize] = useState(1024);
-  const [overlap, setOverlap] = useState(128);
+  const [chunkSize, setChunkSize] = useState(256);
+  const [overlap, setOverlap] = useState(32);
   const [window, setWindow] = useState(3);
   const [splitter, setSplitter] = useState<LlamaindexSplitter>(SPLITTERS[0]);
 
@@ -102,7 +102,7 @@ export default function LlamaIndex({
                 setChunkSize(parseInt(event.currentTarget.value, 10))
               }
             ></input>
-            <p>The number of characters per chunk</p>
+            <p>The number of tokens per chunk</p>
           </div>
         )}
         {splitter === "SentenceSplitter" && (
@@ -118,7 +118,7 @@ export default function LlamaIndex({
                 setOverlap(parseInt(event.currentTarget.value, 10))
               }
             ></input>
-            <p>The number of characters in the overlap between chunks</p>
+            <p>The number of tokens in the overlap between chunks</p>
           </div>
         )}
         {splitter === "SentenceWindowNodeParser" && (
