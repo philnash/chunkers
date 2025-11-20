@@ -3,7 +3,7 @@ An exploration of JavaScript text splitters.
 
 ## What is chunking?
 
-When building a [Retrieval-Augmented Generation (RAG) based app](https://www.ibm.com/think/topics/retrieval-augmented-generation), one of the most important things you need to do is to get your data AI-ready. One of the steps in that process is known as "chunking" as it is used to break down large blocks of text or unstructured data into smaller chunks. Read more about [why chunking is important and what to consider here](https://www.datastax.com/blog/chunking-to-get-your-data-ai-ready?utm_medium=display&utm_source=datastax&utm_campaign=chunkers).
+When building a [Retrieval-Augmented Generation (RAG) based app](https://www.ibm.com/think/topics/retrieval-augmented-generation), one of the most important things you need to do is to get your data AI-ready. One of the steps in that process is known as "chunking" as it is used to break down large blocks of text or unstructured data into smaller chunks. Read more about [why chunking is important and what to consider here](https://unstructured.io/blog/chunking-for-rag-best-practices).
 
 In the JavaScript world, there are a few libraries that can help you with chunking your data. This project is an exploration of those tools and you can see the write up in the blog post on [how to chunk text in JavaScript for your RAG application](https://philna.sh/blog/2024/09/18/how-to-chunk-text-in-javascript-for-rag-applications/).
 
